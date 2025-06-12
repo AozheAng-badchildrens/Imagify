@@ -6,9 +6,11 @@ export const generateImage = async (req, res) => {
   try {
     const { userId, prompt } = req.body;
 
-    const user = await userModel.findById(userId);
+    const user = await userModel.findById(req.user.id);
 
+    console.log(user);
     if (!user || !prompt) {
+      console.log(user ? "Yes" : "no");
       return res.json({ success: false, message: "Missing Details" });
     }
 
@@ -42,7 +44,7 @@ export const generateImage = async (req, res) => {
     });
 
     res.json({
-      sucess: true,
+      success: true,
       message: "Image Generated",
       creditBalance: user.creditBalance - 1,
       resultImage,
